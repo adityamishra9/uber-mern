@@ -10,7 +10,7 @@ const CaptainSignup = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setUserData({ email, password, userName:{firstName, lastName},});
+    setUserData({ email, password, fullName:{firstName, lastName},});
     setEmail('');
     setPassword('');
     setFirstName('');
