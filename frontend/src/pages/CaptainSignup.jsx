@@ -1,20 +1,39 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import {CaptainDataContext} from '../context/CaptainContext';
+import axios from 'axios';
 
 const CaptainSignup = () => {
   const[email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const[userData, setUserData] = useState({});
+  const [vehicleColor, setVehicleColor] = useState();
+  const [vehicleCapacity, setVehicleCapacity] = useState();
+  const [vehiclePlate, setVehiclePlate] = useState();
+  const [vehicleType, setVehicleType] = useState();
+  const { captain, setCaptain } = React.useContext(CaptainDataContext);
 
-  const submitHandler = (e) => {
+  const navigate = useNavigate();
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({ email, password, fullName:{firstName, lastName},});
+    const captain = ({  fullname:{firstName, lastName}, email, password, vehicle:{color:vehicleColor, capacity:vehicleCapacity, plate:vehiclePlate, vehicleType:vehicleType} });
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captain);
+    if(response.status === 201){
+      const data = response.data;
+      setCaptain(data.captain);
+      localStorage.setItem('token', data.token);
+      navigate('/captain/start');
+    }
     setEmail('');
     setPassword('');
     setFirstName('');
     setLastName('');
+    setVehicleColor('');
+    setVehicleCapacity('');
+    setVehiclePlate('');
+    setVehicleType('');
   }
 
   return (
@@ -64,7 +83,6 @@ const CaptainSignup = () => {
             />
 
             <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
-
             <input
               className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
               value={password}
@@ -74,6 +92,55 @@ const CaptainSignup = () => {
               required type="password"
               placeholder='password'
             />
+
+            <h3 className='text-lg font-medium mb-2'>Vehicle Information</h3>
+            <div className='flex gap-4 mb-7'>
+              <input
+                required
+                className='bg-[#eeeeee] w-1/2 rounded-lg px-2 py-2 border  text-lg placeholder:text-base'
+                type="text"
+                placeholder='Vehicle color'
+                value={vehicleColor}
+                onChange={(e) => {
+                  setVehicleColor(e.target.value)
+                }}
+              />
+              <input
+                required
+                className='bg-[#eeeeee] w-1/2  rounded-lg px-2 py-2 border  text-lg placeholder:text-base'
+                type="text"
+                placeholder='Vehicle capacity'
+                value={vehicleCapacity}
+                onChange={(e) => {
+                  setVehicleCapacity(e.target.value)
+                }}
+              />
+              </div>
+            <div className='flex gap-4 mb-7'>
+              <input
+                required
+                className='bg-[#eeeeee] w-1/2 rounded-lg px-2 py-2 border  text-lg placeholder:text-base'
+                type="text"
+                placeholder='Vehicle plate'
+                value={vehiclePlate}
+                onChange={(e) => {
+                  setVehiclePlate(e.target.value)
+                }}
+              />
+              <select
+                required
+                className='bg-[#eeeeee] w-1/2 rounded-lg px-2 py-2 border  text-lg placeholder:text-base'
+                placeholder='Vehicle type'
+                value={vehicleType}
+                onChange={(e) => {
+                  setVehicleType(e.target.value)
+                }}
+              >
+                <option value="auto">Auto</option>
+                <option value="car">Car</option>
+                <option value="moto">Motorcycle</option>
+              </select>
+            </div>
 
             <button
               className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
