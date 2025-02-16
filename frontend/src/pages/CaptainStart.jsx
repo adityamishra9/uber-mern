@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const CaptainStart = () => {
-  return (
-    <div>CaptainStart</div>
-  )
-}
+  return <div>CaptainStart</div>;
+};
 
-export default CaptainStart
+export default CaptainStart;
