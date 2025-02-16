@@ -6,6 +6,7 @@ import LocationSearchPanel from '../components/LocationSearchPanel'
 import VehiclePanel from '../components/VehiclePanel'
 import ConfirmRide from '../components/ConfirmRide'
 import LookingForDriver from '../components/lookingForDriver'
+import WaitingForDriver from '../components/waitingForDriver'
 
 const Start = () => {
   const [pickUp, setPickUp] = useState('')
@@ -13,17 +14,20 @@ const Start = () => {
   const [panelOpen, setPanelOpen] = useState(false)
   const [confirmRidePanel, setConfirmRidePanel] = useState(false)
   const [vehicleFound, setVehicleFound] = useState(false)
+  const [waitingForDriver, setWaitingForDriver] = useState(false)
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
   const vehiclePanelRef = useRef(null)
   const confirmRidePanelRef = useRef(null)
   const vehicleFoundRef = useRef(null)
+  const waitingForDriverRef = useRef(null)
 
   const [vehiclePanel, setVehiclePanel] = useState(false)
 
   const submitHandler = (e) => {
     e.preventDefault();
+
   }
 
   useGSAP(function () {
@@ -83,6 +87,18 @@ const Start = () => {
     }
     }, [ vehicleFound ])
 
+  useGSAP(function () {
+    if (waitingForDriver) {
+        gsap.to(waitingForDriverRef.current, {
+            transform: 'translateY(0)'
+        })
+    } else {
+        gsap.to(waitingForDriverRef.current, {
+            transform: 'translateY(100%)'
+        })
+    }
+    }, [ waitingForDriver ])
+
   return (
     <div className='hscreen relative'>
       <img className='w-16 absolute left-5 top-5' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" />
@@ -137,6 +153,10 @@ const Start = () => {
 
       <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-8 pt-12 translate-y-full'>
         <LookingForDriver setVehicleFound={setVehicleFound} />
+      </div>
+
+      <div ref={waitingForDriverRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-8 pt-12'>
+        <WaitingForDriver waitingForDriver={waitingForDriver}/>
       </div>
     </div>
   )
