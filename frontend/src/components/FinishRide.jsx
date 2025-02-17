@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-const RidePopUp = (props) => {
-
+const FinishRide = (props) => {
   return (
     <div>
        <h5
+       onClick={() => {props.setFinishRidePanel(false)}}
         className="p-1 text-center absolute top-0 w-[93%]"
-        onClick={() => props.setRidePopUpPanel(false)}
       >
         <i className="text-3xl text-gray-200 ri-arrow-down-s-line"></i>
       </h5>
 
-      <h3 className="text-xl font-semibold mb-5">New Ride Available!</h3>
+      <h3 className="text-xl font-semibold mb-5">Finish this Ride!</h3>
 
       <div className='flex items-center justify-between p-3 bg-orange-200 rounded-lg mt-4'>
         <div className='flex items-center gap-3'>
@@ -49,26 +49,17 @@ const RidePopUp = (props) => {
             </div>
           </div>
         </div>
-        <div className="flex w-full items-center justify-between">
-        <button
-          onClick={() => props.setRidePopUpPanel(false)}
-          className="px-10  bg-gray-400 text-white font-semibold p-3 rounded-lg mt-5"
-        >
-          Ignore
-        </button>
-
-        <button
-          onClick={() => {props.setRidePopUpPanel(false)
-          props.setconfirmRidePopUpPanel(true)
-          }}
-          className="px-10 bg-green-600 text-white font-semibold p-3 rounded-lg mt-5"
-        >
-          Accept Ride
-        </button>
+        <div className='mt-6 w-full'>
+            <Link
+                to={'/captain/start'}
+              className="flex justify-center items-center w-full bg-green-600 text-white font-semibold p-2 rounded-lg mt-5"
+            >
+              Complete Ride
+            </Link>
         </div>
       </div>
     </div>
   )
 }
 
-export default RidePopUp
+export default FinishRide
